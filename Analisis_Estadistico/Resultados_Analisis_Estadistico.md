@@ -6,21 +6,22 @@
 
 De las **83 tareas comparadas**, **53 tienen la misma duración esperada**, **4 son semejantes** y **26 presentan diferencias mayores al 5 %**. Esto indica que la mayoría de las tareas se comporta igual en ambos productos, pero un grupo reducido explica las diferencias importantes entre SA101 y SA102.
 
-La **Celda 2** concentra la mayor carga acumulada en los dos productos: **116.633 horas para SA101** y **116.657 horas para SA102**. Por ello, es el principal candidato estadístico a cuello de botella y deberá comprobarse posteriormente en Simio.
+La **Celda 2** concentra la mayor carga acumulada en los dos productos: **116.633 horas para SA101** y **116.657 horas para SA102**. Este comportamiento permite identificarla como el principal candidato preliminar a cuello de botella.
 
-### Interpretación correcta
+### Alcance del resultado
 
-Estas cifras representan la **suma de las duraciones esperadas de las tareas**. No son el tiempo de ciclo ni el tiempo real que tarda un avión en atravesar la línea, porque algunas tareas se ejecutan en paralelo y existen precedencias y restricciones de mecánicos.
+Las cifras anteriores representan la **suma de las duraciones esperadas de las tareas**. No equivalen al tiempo de ciclo ni al tiempo real de permanencia de un avión en la línea, debido a que existen tareas paralelas, relaciones de precedencia y restricciones de disponibilidad de mecánicos.
 
-## 2. Relación con el enunciado de la Fase 1
+## 2. Metodología estadística
 
-El análisis se realizó con base en los tres entregables de **análisis estadístico** indicados en las páginas 10 y 11 del enunciado oficial:
+Los tiempos de trabajo se encuentran definidos mediante distribuciones triangulares de la forma $Triangular(a,m,b)$, donde $a$ es el valor mínimo, $m$ es la moda y $b$ es el valor máximo. Para cada tarea se calcularon las siguientes medidas:
 
-1. Calcular media, varianza, desviación estándar y coeficiente de variación para cada tarea de SA101 y SA102.
-2. Comparar los productos por tarea, número de secuencia y celda de trabajo.
-3. Identificar y clasificar las tareas con mayor duración esperada y mayor variabilidad dentro de cada celda.
+- Media: $E(X)=(a+m+b)/3$.
+- Varianza: $Var(X)=(a^2+m^2+b^2-am-ab-mb)/18$.
+- Desviación estándar: $DE=\sqrt{Var(X)}$.
+- Coeficiente de variación: $CV=(DE/E(X))\times100$.
 
-Se procesaron **83 tareas**, distribuidas en las cinco hojas `WorkCell1` a `WorkCell5`. En el Excel fuente, `Part Type1` corresponde a **SA101** y `PartType2` a **SA102**.
+En total se evaluaron **83 tareas** para cada producto. La comparación se realizó por tarea, secuencia y celda de trabajo. Se consideraron iguales las medias sin diferencia, semejantes las que presentaron una variación de hasta 5 % y diferentes las que superaron dicho porcentaje.
 
 ## 3. Comparación por celda
 
@@ -40,13 +41,11 @@ Se procesaron **83 tareas**, distribuidas en las cinco hojas `WorkCell1` a `Work
 - **Celda 4:** SA102 reduce la carga esperada en 9.17 %.
 - **Celda 5:** no existen diferencias entre los productos.
 
-**Conclusión por celda:** la ventaja acumulada de SA102 se origina principalmente en las celdas 1 y 4. La celda 2 merece atención prioritaria porque posee la carga más alta para ambos productos.
+En conjunto, la menor carga de SA102 se explica principalmente por las reducciones observadas en las celdas 1 y 4. Por otra parte, la celda 2 requiere atención debido a que presenta la mayor carga esperada para ambos productos.
 
 ## 4. Semejanzas y diferencias por tarea
 
-Se utilizó el siguiente criterio de lectura: diferencia igual a 0 % = **igual**; diferencia de hasta 5 % = **semejante**; diferencia mayor a 5 % = **diferente**.
-
-Las diferencias más relevantes son:
+La comparación de medias permitió determinar cuáles actividades mantienen el mismo comportamiento y cuáles cambian según el producto. Las diferencias más relevantes se muestran a continuación:
 
 | Celda | Sec. | Tarea | SA101 (h) | SA102 (h) | Cambio SA102 | Menor carga |
 |---|---:|---|---:|---:|---:|---|
@@ -65,7 +64,7 @@ La diferencia porcentual más grande aparece en `Drill Pilot hole` de la celda 2
 
 ## 5. Tareas de mayor duración y variabilidad
 
-La **media** identifica las tareas que normalmente demandan más tiempo. La **desviación estándar (DE)** identifica las tareas cuyo tiempo puede fluctuar más en términos absolutos.
+La media se utilizó para identificar las tareas con mayor duración esperada, mientras que la desviación estándar permitió determinar cuáles presentan una mayor dispersión absoluta en sus tiempos.
 
 | Celda | Producto | Tarea de mayor duración | Media | Tarea de mayor variabilidad | DE |
 |---|---|---|---:|---|---:|
@@ -82,9 +81,5 @@ La **media** identifica las tareas que normalmente demandan más tiempo. La **de
 
 ### Clasificación utilizada
 
-Las tareas se clasificaron por separado dentro de cada celda y producto. Se consideró **alta** una duración o variabilidad ubicada en el cuartil superior (valor mayor o igual a Q3), **baja** si está en el cuartil inferior (menor o igual a Q1) y **media** para los valores intermedios. Una tarea se marcó como **crítica** cuando fue alta tanto en duración como en variabilidad. El detalle completo está en la hoja `Clasificacion_Tareas` del Excel.
+Las tareas se clasificaron por separado dentro de cada celda y producto. Se consideró **alta** una duración o variabilidad ubicada en el cuartil superior (valor mayor o igual a Q3), **baja** si se ubicó en el cuartil inferior (valor menor o igual a Q1) y **media** para los valores intermedios. Una tarea se clasificó como **crítica** cuando presentó simultáneamente duración y variabilidad altas.
 
-## Archivos de respaldo
-
-- `Resultados_Analisis_Estadistico_Fase1.xlsx`: cálculos completos por tarea, secuencia y celda.
-- `Simio Aerospace Data.xlsx`: datos originales utilizados.
